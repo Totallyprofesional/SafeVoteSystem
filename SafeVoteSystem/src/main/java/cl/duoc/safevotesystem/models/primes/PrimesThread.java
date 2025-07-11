@@ -27,7 +27,7 @@ public class PrimesThread implements Runnable{
 
     @Override
     public void run() {  
-        primesList = new PrimesList();
+         primesList = new PrimesList();
          
         for (int i = 0; i < n; i++) {
             int numero = minimo + (int)(Math.random() * ((maximo - minimo) + 1));   

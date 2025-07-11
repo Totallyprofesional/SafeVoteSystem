@@ -7,21 +7,25 @@ package cl.duoc.safevotesystem;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import cl.duoc.safevotesystem.models.mensaje.Mensaje;
+import cl.duoc.safevotesystem.models.primes.PrimesData;
 import cl.duoc.safevotesystem.models.primes.PrimesList;
 import java.io.BufferedWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Home
- */
+ */ 
 public class Menu {
     private Scanner sc = new Scanner(System.in);
     private PrimesList primeList;
     private Mensaje mensaje;
     private int numero;
     private String texto;
+    private List<PrimesData> primes = new ArrayList<>();
 
-    public Menu(PrimesList primeList, Mensaje mensaje, int primo, String texto) {
+    public Menu(PrimesList primeList, Mensaje mensaje, int numero, String texto) {
         this.primeList = primeList;
         this.mensaje = mensaje;
         this.numero = numero;
@@ -37,17 +41,20 @@ public class Menu {
             System.out.println("2. Agregar codigos");
             System.out.println("3. Buscar codigos");
             System.out.println("4. Eliminar codigos");
-            System.out.println("5. Mostrar total de c�digos primos");
-            System.out.println("6. Salir");
+            System.out.println("5. Mostrar total de codigos primos");
+            System.out.println("6. Cargar lista de codigos");
+            System.out.println("7. Guardar Cambios");
+            System.out.println("8. Exportar Reporte");
+            System.out.println("9. Salir");
             System.out.print("Seleccione una opcion: ");
              
             option = sc.nextInt(); 
   
-            switch (option) {
-                case 1:
+            switch (option) { 
+                case 1: 
                     Mensajeria(sc);
                     break;
-                case 2: 
+                case 2:  
                     AgregarCodigos(sc); 
                     break; 
                 case 3: 
@@ -59,14 +66,24 @@ public class Menu {
                 case 5:
                     TotalCodigos(); 
                     break;
-                case 6:
+                case 6: 
+                    CargarCodigos();
+                    break;
+                case 7:
+                    GuardarCambios();      
+                    break;
+                case 8:
+                    ExportarReporteTxt(); 
+                    break;
+                case 9:
                     System.out.println("Saliendo del sistema...");
                     break;
                 default:
                     System.out.println("Por favor ingrese una opcion valida");
+                    break;
             } 
 
-        } while (option != 6); 
+        } while (option != 9); 
     }  
 
     public void Mensajeria(Scanner sc) {
@@ -138,12 +155,20 @@ public class Menu {
     public void TotalCodigos() {
         primeList.getPrimesCount();
     }
-    
-    // Metodos CSV
+     
+    public void CargarCodigos() {
+        List<PrimesData> primes = PrimesData.cargarDesdeCSV(); 
+        System.out.println("");
+        System.out.println("Codigos leídos desde CSV:");
+        
+        for (PrimesData prime : primes) {
+        System.out.println(prime.getIndex() + ": " + prime.getPrimeNumber());
+        }
+    }
     
     private void GuardarCambios() {
         try {
-            Comic.guardarComicsEnCSV(comics);
+            PrimesData.guardarEnCSV(primes);
             System.out.println("Cambios guardados satisfactoriamente");
         } catch (Exception e) {
             System.out.println("Error al guardar los cambios: " + e.getMessage());
@@ -152,19 +177,19 @@ public class Menu {
     
     public void ExportarReporteTxt() {
       String fecha = java.time.LocalDate.now().toString();
-      String rutaArchivo = "reporte_comics_" + fecha + ".txt";
+      String rutaArchivo = "reporte_codigos_" + fecha + ".txt";
       try (BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(rutaArchivo))) {
-        writer.write("Reporte de Comics");
+        writer.write("Lista de codigos");
         writer.newLine();
-        if (comics.isEmpty()) {
-          writer.write("No hay comics disponibles.");
+        if (primes.isEmpty()) { 
+          writer.write("No hay codigos registrados");
           writer.newLine();
         } else { 
-          for (Comic comic : comics) {
-            writer.write(comic.getIsbn() + " - " + comic.getTitulo() + " - " + comic.getAutor() + " - " + comic.getAnio());
+          for (PrimesData prime : primes) {
+            writer.write(prime.getIndex() + " - " + prime.getPrimeNumber());
             writer.newLine();
           }
-          writer.write("Total de comics: " + comics.size());
+          writer.write("Total de codigos: " + primes.size());
           writer.newLine();
           writer.write("Fecha de generación del reporte: " + fecha);
         }

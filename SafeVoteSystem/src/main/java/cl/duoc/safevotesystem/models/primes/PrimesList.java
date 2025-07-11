@@ -4,11 +4,6 @@
  */
 package cl.duoc.safevotesystem.models.primes;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,56 +46,6 @@ public class PrimesList extends ArrayList<Integer> {
     
     public int getPrimesCount() {
         return this.size();
-    }
-    
-    // Metodos CSV
-    
-     public static List<Comic> cargarComicsDesdeCSV() {
-        List<Comic> comics = new ArrayList<>();
-        try (
-            FileReader reader = new FileReader("comics.csv");
-            CSVReader csvReader = new CSVReader(reader);
-        ) {
-            System.out.println(new java.io.File(".").getAbsolutePath());
-            
-            String[] nextLine;
-            csvReader.readNext(); // skip header
-            
-            while ((nextLine = csvReader.readNext()) != null) {
-                String isbn = nextLine[0];
-                String titulo = nextLine[1];
-                String autor = nextLine[2];
-                int anio = Integer.parseInt(nextLine[3]);
-
-                Comic comic = new Comic(isbn, titulo, autor, anio); 
-                comics.add(comic);
-            }
-        } catch (Exception e) {
-            System.out.println("Error de lectura: " + e.getMessage());
-        }
-        return comics;
-    }
-
-    public static void guardarComicsEnCSV(List<Comic> comics) {
-        try (
-            FileWriter writer = new FileWriter("comics.csv");
-            CSVWriter csvWriter = new CSVWriter(writer);
-        ) {
-            String[] header = {"isbn", "titulo", "autor", "año"};
-            csvWriter.writeNext(header);
-
-            for (Comic comic : comics) {
-            String[] data = {
-                comic.getIsbn(),
-                comic.getTitulo(),
-                comic.getAutor(),
-                String.valueOf(comic.getAnio())
-            };
-            csvWriter.writeNext(data);
-            }
-        } catch (IOException e) {
-        System.out.println("Error de guardado: " + e.getMessage());
-        }
-    }
+    } 
     
 }
