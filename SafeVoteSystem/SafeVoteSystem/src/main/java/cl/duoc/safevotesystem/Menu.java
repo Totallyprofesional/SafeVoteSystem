@@ -22,20 +22,26 @@ import java.util.concurrent.LinkedBlockingQueue;
  */ 
 public class Menu {
     private Scanner sc = new Scanner(System.in);
-    private PrimesList primeList;
+    private PrimesList primesList;
+    private PrimesThread primesThread;
     private Mensaje mensaje;
     private int numero;
     private String texto;
     private List<PrimesData> primes = new ArrayList<>();
     private BlockingQueue<Mensaje> queue = new LinkedBlockingQueue<>();
+    private int minimo, maximo, n;
 
-    public Menu(PrimesList primeList, Mensaje mensaje, int numero, String texto) {
-        this.primeList = primeList;
+    public Menu(PrimesList primesList, PrimesThread primesThread, Mensaje mensaje, int numero, String texto, int minimo, int maximo, int n) {
+        this.primesList = primesList;
+        this.primesThread = primesThread;
         this.mensaje = mensaje;
         this.numero = numero;
         this.texto = texto;
+        this.minimo = minimo;
+        this.maximo = maximo;
+        this.n = n;
     }
-    
+
     public void mostrarMenu() throws InterruptedException {
         int option = 0;
  
@@ -50,7 +56,7 @@ public class Menu {
             System.out.println("7. Guardar Cambios");
             System.out.println("8. Exportar Reporte");
             System.out.println("9. Salir");
-            System.out.print("Seleccione una opcion: ");
+            System.out.print("Seleccione una opcion: "); 
              
             option = sc.nextInt(); 
   
@@ -87,47 +93,38 @@ public class Menu {
                     break;
             } 
 
-        } while (option != 9); 
+        } while (option != 9);  
     }   
 
     public void Mensajeria(Scanner sc) throws InterruptedException { 
         System.out.print("Ingrese texto del mensaje: ");
-        String texto = sc.nextLine(); 
-        System.out.print("Ingrese codigo primo asociado: ");
-        int numero;
-        
-        try { 
-            numero = sc.nextInt();
-            sc.nextLine(); 
-        } catch (InputMismatchException e) {
-            System.out.println("Error. Ingrese un numero valido.");
-            sc.nextLine(); 
-            return;
-        }
-        
-        // numero debe llamar al generador random
-        // despues debe ser agregado a las listas
-        
-        if (primeList.isPrime(numero)){
-            PrimesThread.start();
-            Mensaje.start();
-            
-            Mensaje mensaje = new Mensaje(texto); 
-            queue.put(mensaje); 
-            mensaje.start(); 
-            
-            System.out.println("Mensaje enviado.");
+        String texto = sc.nextLine();
+
+        PrimesThread primesThread = new PrimesThread(numero, 10, 100);
+        Thread t = new Thread(primesThread);
+        t.start(); 
+        t.join();
+        int numero = primesThread.getNumero();
+
+        if (primesList.isPrime(numero)) {
+            Mensaje mensaje = new Mensaje(texto, numero);
+            try {
+                queue.put(mensaje);
+                System.out.println("Mensaje enviado y en queue: " + numero);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         } else {
-            System.out.println("Codigo invalido.");
-        }        
+            System.out.println("Codigo invalido generado: " + numero);
+        }     
     } 
     
     public void AgregarCodigos(Scanner sc) {   
         try {
-            numero = sc.nextInt();
+            numero = sc.nextInt(); 
             sc.nextLine(); 
         
-            if (primeList.add(numero)){
+            if (primesList.add(numero)){
                 System.out.println("Codigo agregado.");
             } else {
                 System.out.println("Codigo invalido.");
@@ -145,10 +142,10 @@ public class Menu {
             numero = sc.nextInt(); 
             sc.nextLine();   
          
-            if (primeList.contains(numero)) {
+            if (primesList.contains(numero)) {
                 System.out.println("Codigo encontrado.");
             } else {
-                System.out.println("Codigo no encontrado.");
+                System.out.println("Codigo no encontrado."); 
             }
         
         } catch (InputMismatchException e) {
@@ -164,15 +161,15 @@ public class Menu {
             System.out.println("Error. Ingrese un numero valido.");
         }   
         
-        if (!primeList.isEmpty()) { 
-            primeList.remove(numero); 
+        if (!primesList.isEmpty()) { 
+            primesList.remove(numero); 
         } else {
             System.out.println("La lista está vacía.");
         }       
     }   
       
     public void TotalCodigos() {
-        primeList.getPrimesCount();
+        primesList.getPrimesCount();
     }
      
     public void CargarCodigos() {

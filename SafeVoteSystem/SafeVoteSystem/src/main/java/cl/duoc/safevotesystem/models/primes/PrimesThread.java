@@ -4,6 +4,7 @@
  */
 package cl.duoc.safevotesystem.models.primes;
 
+import cl.duoc.safevotesystem.models.mensaje.Mensaje;
 import cl.duoc.safevotesystem.models.primes.PrimesList;
 import java.util.concurrent.BlockingQueue;
 
@@ -12,43 +13,27 @@ import java.util.concurrent.BlockingQueue;
  * @author Home
  */
 public class PrimesThread implements Runnable{
-    private PrimesList primesList;
-    private BlockingQueue<Integer> queue;
-    private int minimo; 
-    private int maximo;
-    private int n;
+    private int numero, minimo, maximo;
 
-    public PrimesThread(PrimesList primesList, BlockingQueue<Integer> queue, int minimo, int maximo, int n) {
-        this.primesList = primesList;
-        this.queue = queue;
+    public PrimesThread(int numero, int minimo, int maximo) {
+        this.numero = numero;
         this.minimo = minimo;
         this.maximo = maximo;
-        this.n = n;
+    } 
+
+    public int getNumero() {
+        return numero; 
     }
 
-     @Override
+    @Override
     public void run() {  
-        primesList = new PrimesList();
-         
-        for (int i = 0; i < n; i++) {
-            int numero = minimo + (int)(Math.random() * ((maximo - minimo) + 1));   
-                          
-            if(primesList.isPrime(numero)){
-                primesList.add(numero); 
-            }else {
-                System.out.println("Numero ingresado no es primo");
-            } 
-        }
-          
+        numero = minimo + (int)(Math.random() * ((maximo - minimo) + 1));     
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             System.out.println("Error: " + ex.getMessage());
         } 
-    }
-    
-    public PrimesList getPrimes() {
-        return primesList;
     }
     
 }
