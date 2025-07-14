@@ -17,9 +17,9 @@ public class SafeVoteSystem {
     public static int numero;
     public static String texto;
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Menu menu = new Menu(primeList, mensaje, numero, texto);
         menu.mostrarMenu();
-        }
+    }
 } 
   

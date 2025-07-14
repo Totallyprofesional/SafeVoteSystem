@@ -16,6 +16,8 @@ public class PrimesList extends ArrayList<Integer> {
      
     public boolean isPrime(int numero) {  
         try {  
+            if (numero <= 1) return false;
+            if (numero <= 3) return true;
             if (numero % 2 == 0 || numero % 3 == 0) return false;
          
             // Desde 25 
@@ -48,10 +50,6 @@ public class PrimesList extends ArrayList<Integer> {
                 Thread.currentThread().interrupt();
                 return false;
             }
-        }
-        
-        if (numero instanceof Integer && !isPrime((Integer) numero)) {
-            throw new IllegalArgumentException("Numero ingresado debe ser primo");
         }
         return super.remove(numero);
     }

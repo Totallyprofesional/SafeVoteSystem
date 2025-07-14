@@ -4,32 +4,36 @@
  */
 package cl.duoc.safevotesystem.models.mensaje;
 
-/**
- *
- * @author Home
- */
+public class Mensaje extends Thread{ 
+    private String texto;
+    private int numero; 
 
-public class Mensaje extends Thread{
-    private String texto; 
-    private int numero;    
-
-    public Mensaje(String texto, int primo) {
+    public Mensaje(String texto, int numero) {
         this.texto = texto;
-        this.numero = numero;
-    }
+        this.numero = numero; 
+    } 
+    
+    public String getTexto() {
+        return texto;
+    } 
  
-    @Override
+    public int getNumero() {
+        return numero;
+    }
+     
+    @Override  
     public void run() {
         System.out.println("Mensaje: " + texto);
         System.out.println("Verificar codigo: " + numero);
-        
         try {
-            Thread.sleep(1000); 
-        } catch (InterruptedException e) { 
-            e.printStackTrace();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); 
         }
-        System.out.println(texto);
+        System.out.println("Mensaje procesado: " + texto);
     }
     
 }
+    
 
+ 

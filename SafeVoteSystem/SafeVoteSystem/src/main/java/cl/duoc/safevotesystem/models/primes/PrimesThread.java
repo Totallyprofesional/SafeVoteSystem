@@ -5,6 +5,7 @@
 package cl.duoc.safevotesystem.models.primes;
 
 import cl.duoc.safevotesystem.models.primes.PrimesList;
+import java.util.concurrent.BlockingQueue;
 
 /**
  *
@@ -12,21 +13,23 @@ import cl.duoc.safevotesystem.models.primes.PrimesList;
  */
 public class PrimesThread implements Runnable{
     private PrimesList primesList;
-    private int numero;
-    private int minimo;
+    private BlockingQueue<Integer> queue;
+    private int minimo; 
     private int maximo;
     private int n;
 
-    public PrimesThread(PrimesList primes, int numero, int minimo, int maximo, int n) {
+    public PrimesThread(PrimesList primesList, BlockingQueue<Integer> queue, int minimo, int maximo, int n) {
         this.primesList = primesList;
-        this.numero = numero;
+        this.queue = queue;
         this.minimo = minimo;
         this.maximo = maximo;
         this.n = n;
     }
 
-    @Override
+     @Override
     public void run() {  
+        primesList = new PrimesList();
+         
         for (int i = 0; i < n; i++) {
             int numero = minimo + (int)(Math.random() * ((maximo - minimo) + 1));   
                           
@@ -34,7 +37,7 @@ public class PrimesThread implements Runnable{
                 primesList.add(numero); 
             }else {
                 System.out.println("Numero ingresado no es primo");
-            }
+            } 
         }
           
         try {
