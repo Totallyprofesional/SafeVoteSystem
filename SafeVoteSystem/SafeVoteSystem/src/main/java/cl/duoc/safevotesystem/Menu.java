@@ -52,7 +52,7 @@ public class Menu {
             System.out.println("3. Buscar codigos");
             System.out.println("4. Eliminar codigos");
             System.out.println("5. Mostrar total de codigos primos");
-            System.out.println("6. Cargar lista de codigos");
+            System.out.println("6. Cargar lista de codigos CSV");
             System.out.println("7. Guardar Cambios");
             System.out.println("8. Exportar Reporte");
             System.out.println("9. Salir");
@@ -101,17 +101,15 @@ public class Menu {
         System.out.println("Ingrese texto del mensaje: ");
         String texto = sc.nextLine();
         
-        this.primesList = new PrimesList();   
         int numero;    
- 
+  
         do{
             PrimesThread primesThread = new PrimesThread(10, 100);
             Thread t = new Thread(primesThread);
             t.start(); 
-            t.join(); 
+            t.join();  
             numero = primesThread.getNumero(); 
-             
-        } while (!primesList.isPrime(numero));
+        } while (!primesList.isPrime(numero));     
         
         Mensaje mensaje = new Mensaje(texto, numero);
         try {
@@ -120,8 +118,8 @@ public class Menu {
             System.out.println("Codigo en queue: " + numero);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        }
-    }     
+        } 
+    }
     
     public void AgregarCodigos(Scanner sc) {   
         try {
