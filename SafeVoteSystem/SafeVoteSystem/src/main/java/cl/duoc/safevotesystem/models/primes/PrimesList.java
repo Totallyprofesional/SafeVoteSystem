@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class PrimesList extends ArrayList<Integer> {
      
-    public boolean isPrime(int numero) {  
+    public static boolean isPrime(int numero) {  
         try {  
             if (numero <= 1) return false;
             if (numero <= 3) return true;
@@ -27,7 +27,7 @@ public class PrimesList extends ArrayList<Integer> {
         } catch (Exception e) {
             System.out.println("Error de verificacion: " + e.getMessage());
             return false;
-        }
+        }  
         return true; 
     } 
          

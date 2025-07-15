@@ -99,14 +99,20 @@ public class Menu {
     public void Mensajeria(Scanner sc) throws InterruptedException { 
         System.out.print("Ingrese texto del mensaje: ");
         String texto = sc.nextLine();
+        
+        this.primesList = new PrimesList(); 
+        int numero; 
 
-        PrimesThread primesThread = new PrimesThread(numero, 10, 100);
-        Thread t = new Thread(primesThread);
-        t.start(); 
-        t.join();
-        int numero = primesThread.getNumero();
-
-        if (primesList.isPrime(numero)) {
+        do{
+            PrimesThread primesThread = new PrimesThread(10, 100);
+            Thread t = new Thread(primesThread);
+            t.start(); 
+            t.join(); 
+            numero = primesThread.getNumero(); 
+            System.out.print("Codigo generado: " + numero);
+             
+        } while (!primesList.isPrime(numero));
+        
             Mensaje mensaje = new Mensaje(texto, numero);
             try {
                 queue.put(mensaje);
@@ -114,10 +120,9 @@ public class Menu {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-        } else {
-            System.out.println("Codigo invalido generado: " + numero);
-        }     
-    } 
+       
+    }     
+    
     
     public void AgregarCodigos(Scanner sc) {   
         try {
