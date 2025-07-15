@@ -33,8 +33,6 @@ public class PrimesData {
         return primeNumber;
     }
     
-    // Metodos CSV
-    
     public static List<PrimesData> cargarDesdeCSV() {  
         List<PrimesData> primes = new ArrayList<>();
         try (
