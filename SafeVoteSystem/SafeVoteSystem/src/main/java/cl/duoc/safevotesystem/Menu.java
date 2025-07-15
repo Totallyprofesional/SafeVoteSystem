@@ -97,30 +97,30 @@ public class Menu {
     }   
 
     public void Mensajeria(Scanner sc) throws InterruptedException { 
-        System.out.print("Ingrese texto del mensaje: ");
+        sc.nextLine(); 
+        System.out.println("Ingrese texto del mensaje: ");
         String texto = sc.nextLine();
         
-        this.primesList = new PrimesList(); 
-        int numero; 
-
+        this.primesList = new PrimesList();   
+        int numero;    
+ 
         do{
             PrimesThread primesThread = new PrimesThread(10, 100);
             Thread t = new Thread(primesThread);
             t.start(); 
             t.join(); 
             numero = primesThread.getNumero(); 
-            System.out.print("Codigo generado: " + numero);
              
         } while (!primesList.isPrime(numero));
         
-            Mensaje mensaje = new Mensaje(texto, numero);
-            try {
-                queue.put(mensaje);
-                System.out.println("Mensaje enviado y en queue: " + numero);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-       
+        Mensaje mensaje = new Mensaje(texto, numero);
+        try {
+            queue.put(mensaje);
+            System.out.println("Mensaje enviado: " + texto);
+            System.out.println("Codigo en queue: " + numero);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }     
     
     
@@ -137,6 +137,7 @@ public class Menu {
         
         } catch (InputMismatchException e) {
             System.out.println("Error. Ingrese un numero valido.");
+            sc.nextLine();
         }   
     }
              
@@ -154,7 +155,8 @@ public class Menu {
             }
         
         } catch (InputMismatchException e) {
-            System.out.println("Error. Ingrese un numero valido.");
+            System.out.println("Error. Ingrese un numero valido.");           
+            sc.nextLine();
         }   
     }
      
@@ -163,18 +165,21 @@ public class Menu {
             numero = sc.nextInt(); 
             sc.nextLine(); 
         } catch (InputMismatchException e) {
-            System.out.println("Error. Ingrese un numero valido.");
+            System.out.println("Error. Ingrese un numero valido.");   
+            sc.nextLine();
         }   
         
         if (!primesList.isEmpty()) { 
             primesList.remove(numero); 
         } else {
             System.out.println("La lista está vacía.");
-        }       
+        }        
     }   
       
+   
     public void TotalCodigos() {
-        primesList.getPrimesCount();
+        this.primesList = new PrimesList();
+        System.out.println("Total de códigos: " + primesList.getPrimesCount());
     }
      
     public void CargarCodigos() {
