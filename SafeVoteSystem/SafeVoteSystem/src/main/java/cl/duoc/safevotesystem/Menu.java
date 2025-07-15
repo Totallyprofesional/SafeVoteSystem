@@ -32,7 +32,7 @@ public class Menu {
     private int minimo, maximo, n;
 
     public Menu(PrimesList primesList, PrimesThread primesThread, Mensaje mensaje, int numero, String texto, int minimo, int maximo, int n) {
-        this.primesList = primesList;
+        this.primesList = new PrimesList(); 
         this.primesThread = primesThread;
         this.mensaje = mensaje;
         this.numero = numero;
@@ -123,28 +123,29 @@ public class Menu {
         }
     }     
     
-    
     public void AgregarCodigos(Scanner sc) {   
         try {
             System.out.print("Ingrese código primo: ");
             numero = sc.nextInt(); 
             sc.nextLine(); 
-        
+           
             if (primesList.add(numero)){
                 System.out.println("Codigo agregado.");
             } else {
                 System.out.println("Codigo invalido.");
             }   
         
-        } catch (InputMismatchException e) {
+        } catch (InputMismatchException e) { 
             System.out.println("Error. Ingrese un numero valido.");
             sc.nextLine();
-        }   
-    }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }  
              
     public void BuscarCodigos(Scanner sc) {
         try {
-            System.out.print("Ingrese codigo primo: ");
+            System.out.print("Ingrese codigo primo: "); 
             numero = sc.nextInt(); 
             sc.nextLine();   
          
@@ -157,29 +158,34 @@ public class Menu {
         } catch (InputMismatchException e) {
             System.out.println("Error. Ingrese un numero valido.");           
             sc.nextLine();
-        }   
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }  
     }
      
     public void EliminarCodigos(Scanner sc) {
         try {
             System.out.print("Ingrese código primo: ");
             numero = sc.nextInt();  
-            sc.nextLine(); 
+            sc.nextLine();  
             
-            if (!primesList.isEmpty()) { 
-                primesList.remove(numero); 
-            } else {
-                System.out.println("La lista está vacía.");
-            }    
+            if (!primesList.isEmpty()) {
+                boolean removed = primesList.remove(Integer.valueOf(numero));
+                if (removed) {
+                    System.out.println("Código eliminado.");
+                } else {
+                    System.out.println("Código no encontrado.");
+                } System.out.println("La lista está vacía.");
+            }
         } catch (InputMismatchException e) {
             System.out.println("Error. Ingrese un numero valido.");   
             sc.nextLine();
-        }            
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }          
     }   
-      
-   
+
     public void TotalCodigos() {
-        this.primesList = new PrimesList();
         System.out.println("Total de códigos: " + primesList.getPrimesCount());
     }
      

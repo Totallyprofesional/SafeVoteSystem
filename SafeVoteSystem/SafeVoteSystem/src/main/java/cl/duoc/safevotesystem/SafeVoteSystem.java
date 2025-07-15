@@ -15,7 +15,7 @@ import cl.duoc.safevotesystem.models.primes.PrimesThread;
 public class SafeVoteSystem { 
     public static PrimesList primesList;  
     public static PrimesThread primesThread;
-    public static Mensaje mensaje; 
+    public static Mensaje mensaje;  
     public static int numero;
     public static String texto;
     public static int minimo, maximo, n;
