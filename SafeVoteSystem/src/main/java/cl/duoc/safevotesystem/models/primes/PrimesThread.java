@@ -11,29 +11,31 @@ import java.util.concurrent.BlockingQueue;
 /**
  *
  * @author Home
- */
+ */ 
 public class PrimesThread implements Runnable{
-    private int numero, minimo, maximo;
+    private int numero;
+    private int minimo, maximo;
 
-    public PrimesThread(int numero, int minimo, int maximo) {
-        this.numero = numero;
+    public PrimesThread(int minimo, int maximo) {
         this.minimo = minimo;
         this.maximo = maximo;
     } 
-
-    public int getNumero() {
-        return numero; 
-    }
-
-    @Override
+    
+    @Override 
     public void run() {  
-        numero = minimo + (int)(Math.random() * ((maximo - minimo) + 1));     
+        do {
+            this.numero = minimo + (int)(Math.random() * ((maximo - minimo) + 1));
+        } while (!PrimesList.isPrime(this.numero));      
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             System.out.println("Error: " + ex.getMessage());
         } 
+    }
+    
+    public int getNumero() {
+        return numero;
     }
     
 }

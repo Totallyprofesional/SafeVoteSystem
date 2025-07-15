@@ -17,27 +17,27 @@ import java.util.List;
  * @author Home
  */
 public class PrimesData {
-    private String Index;
+    private String index;
     private String primeNumber;
 
-    public PrimesData(String Index, String primeNumber) {
-        this.Index = Index;
+    public PrimesData(String index, String primeNumber) {
+        this.index = index;
         this.primeNumber = primeNumber;
     }
      
     public String getIndex() {
-        return Index;
+        return index;
     }
 
     public String getPrimeNumber() {
-        return primeNumber;
+        return primeNumber; 
     }
     
     public static List<PrimesData> cargarDesdeCSV() {  
         List<PrimesData> primes = new ArrayList<>();
         try (
             FileReader reader = new FileReader("primos.csv"); 
-            CSVReader csvReader = new CSVReader(reader);
+            CSVReader csvReader = new CSVReader(reader); 
         ) {
             System.out.println(new java.io.File(".").getAbsolutePath());
             
@@ -45,10 +45,10 @@ public class PrimesData {
             csvReader.readNext();  
             
             while ((nextLine = csvReader.readNext()) != null) { 
-                String Index = nextLine[0];
+                String index = nextLine[0];
                 String primeNumber = nextLine[1];
 
-                PrimesData prime = new PrimesData(Index, primeNumber); 
+                PrimesData prime = new PrimesData(index, primeNumber); 
                 primes.add(prime); 
             }
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class PrimesData {
             FileWriter writer = new FileWriter("primos.csv");
             CSVWriter csvWriter = new CSVWriter(writer);
         ) {
-            String[] header = {"Index", "PrimeNumber"};
+            String[] header = {"Index", "primeNumber"};
             csvWriter.writeNext(header);
 
             for (PrimesData prime : primes) {

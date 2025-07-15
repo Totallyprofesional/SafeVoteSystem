@@ -97,51 +97,60 @@ public class Menu {
     }   
 
     public void Mensajeria(Scanner sc) throws InterruptedException { 
-        System.out.print("Ingrese texto del mensaje: ");
+        sc.nextLine(); 
+        System.out.println("Ingrese texto del mensaje: ");
         String texto = sc.nextLine();
-
-        PrimesThread primesThread = new PrimesThread(numero, 10, 100);
-        Thread t = new Thread(primesThread);
-        t.start(); 
-        t.join();
-        int numero = primesThread.getNumero();
-
-        if (primesList.isPrime(numero)) {
-            Mensaje mensaje = new Mensaje(texto, numero);
-            try {
-                queue.put(mensaje);
-                System.out.println("Mensaje enviado y en queue: " + numero);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        } else {
-            System.out.println("Codigo invalido generado: " + numero);
-        }     
-    } 
+        
+        this.primesList = new PrimesList();   
+        int numero;    
+ 
+        do{
+            PrimesThread primesThread = new PrimesThread(10, 100);
+            Thread t = new Thread(primesThread);
+            t.start(); 
+            t.join(); 
+            numero = primesThread.getNumero(); 
+             
+        } while (!primesList.isPrime(numero));
+        
+        Mensaje mensaje = new Mensaje(texto, numero);
+        try {
+            queue.put(mensaje);
+            System.out.println("Mensaje enviado: " + texto);
+            System.out.println("Codigo en queue: " + numero);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }     
     
     public void AgregarCodigos(Scanner sc) {   
         try {
+            System.out.print("Ingrese código primo: ");
             numero = sc.nextInt(); 
             sc.nextLine(); 
         
+            this.primesList = new PrimesList();   
             if (primesList.add(numero)){
                 System.out.println("Codigo agregado.");
             } else {
                 System.out.println("Codigo invalido.");
             }   
         
-        } catch (InputMismatchException e) {
+        } catch (InputMismatchException e) { 
             System.out.println("Error. Ingrese un numero valido.");
-        }   
-    }
+            sc.nextLine();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    } 
              
     public void BuscarCodigos(Scanner sc) {
-        System.out.print("Ingrese codigo primo: ");
-        
         try {
+            System.out.print("Ingrese codigo primo: "); 
             numero = sc.nextInt(); 
             sc.nextLine();   
          
+            this.primesList = new PrimesList();   
             if (primesList.contains(numero)) {
                 System.out.println("Codigo encontrado.");
             } else {
@@ -149,27 +158,32 @@ public class Menu {
             }
         
         } catch (InputMismatchException e) {
-            System.out.println("Error. Ingrese un numero valido.");
+            System.out.println("Error. Ingrese un numero valido.");           
+            sc.nextLine();
         }   
     }
      
     public void EliminarCodigos(Scanner sc) {
         try {
-            numero = sc.nextInt(); 
+            System.out.print("Ingrese código primo: ");
+            numero = sc.nextInt();  
             sc.nextLine(); 
+            
+            this.primesList = new PrimesList();   
+            if (!primesList.isEmpty()) { 
+                primesList.remove(numero); 
+            } else {
+                System.out.println("La lista está vacía.");
+            }    
         } catch (InputMismatchException e) {
-            System.out.println("Error. Ingrese un numero valido.");
-        }   
-        
-        if (!primesList.isEmpty()) { 
-            primesList.remove(numero); 
-        } else {
-            System.out.println("La lista está vacía.");
-        }       
+            System.out.println("Error. Ingrese un numero valido.");   
+            sc.nextLine();
+        }            
     }   
-      
+
     public void TotalCodigos() {
-        primesList.getPrimesCount();
+        this.primesList = new PrimesList();
+        System.out.println("Total de códigos: " + primesList.getPrimesCount());
     }
      
     public void CargarCodigos() {
