@@ -126,6 +126,7 @@ public class Menu {
     
     public void AgregarCodigos(Scanner sc) {   
         try {
+            System.out.print("Ingrese código primo: ");
             numero = sc.nextInt(); 
             sc.nextLine(); 
         
@@ -142,9 +143,8 @@ public class Menu {
     }
              
     public void BuscarCodigos(Scanner sc) {
-        System.out.print("Ingrese codigo primo: ");
-        
         try {
+            System.out.print("Ingrese codigo primo: ");
             numero = sc.nextInt(); 
             sc.nextLine();   
          
@@ -162,18 +162,19 @@ public class Menu {
      
     public void EliminarCodigos(Scanner sc) {
         try {
-            numero = sc.nextInt(); 
+            System.out.print("Ingrese código primo: ");
+            numero = sc.nextInt();  
             sc.nextLine(); 
+            
+            if (!primesList.isEmpty()) { 
+                primesList.remove(numero); 
+            } else {
+                System.out.println("La lista está vacía.");
+            }    
         } catch (InputMismatchException e) {
             System.out.println("Error. Ingrese un numero valido.");   
             sc.nextLine();
-        }   
-        
-        if (!primesList.isEmpty()) { 
-            primesList.remove(numero); 
-        } else {
-            System.out.println("La lista está vacía.");
-        }        
+        }            
     }   
       
    
