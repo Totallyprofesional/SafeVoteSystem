@@ -102,14 +102,29 @@ public class Menu {
         String texto = sc.nextLine();
         
         int numero;    
-  
+ 
         do{
             PrimesThread primesThread = new PrimesThread(10, 100);
             Thread t = new Thread(primesThread);
             t.start(); 
-            t.join();  
+            t.join(); 
             numero = primesThread.getNumero(); 
-        } while (!primesList.isPrime(numero));     
+        } while (!primesList.isPrime(numero));
+        
+        if (primesList.add(numero)) {
+        System.out.println("Primo generado agregado: " + numero);
+        }
+
+        // Convertir lista a PrimesData 
+        List<PrimesData> data = new ArrayList<>();
+        for (int i = 0; i < primesList.size(); i++) {
+            data.add(new PrimesData(
+            String.valueOf(i + 1),
+       String.valueOf(primesList.get(i))));
+        }
+
+        // Guardar CSV
+        PrimesData.guardarEnCSV(data);
         
         Mensaje mensaje = new Mensaje(texto, numero);
         try {
