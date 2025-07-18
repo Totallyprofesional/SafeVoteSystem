@@ -2,6 +2,7 @@ SafeVoteSystem
 
 SafeVoteSystem es un proyecto en Java que simula un sistema de votación segura utilizando números primos como códigos únicos para los mensajes. 
 Incluye opciones de gestión de códigos y simulación de notificaciones. 
+
 Este proyecto está diseñado para ejecutarse en NetBeans.
 
 Características
